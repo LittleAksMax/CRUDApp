@@ -1,0 +1,6 @@
+# List of directories to keep even if empty
+templates/
+static/
+static/images/
+static/javascript/
+static/styles/
