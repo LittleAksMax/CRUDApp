@@ -7,16 +7,18 @@
 {% block body %}
   <div class="login-box">
     <h1>Login</h1>
-    <div class="textbox">
-      <i class="fas fa-user"></i>
-      <input type="text" name="username" placeholder="Username or Email">
-    </div>
+    <form action="#" method="post">
+      <div class="textbox">
+        <i class="fas fa-user"></i>
+        <input type="text" name="username" placeholder="Username or Email">
+      </div>
 
-    <div class="textbox">
-      <i class="fas fa-lock"></i>
-      <input type="password" name="password" placeholder="Password">
-    </div>
+      <div class="textbox">
+        <i class="fas fa-lock"></i>
+        <input type="password" name="password" placeholder="Password">
+      </div>
 
-    <input type="button" class="btn" value="Log in">
+      <input type="submit" class="btn" value="Log in">
+    </form>
   </div>
 {% endblock %}

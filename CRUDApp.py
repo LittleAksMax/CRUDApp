@@ -8,12 +8,14 @@ def index():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    if request.method == "POST":
-        #user = request.form["username"]
-        print(request.data)
-        return redirect(url_for("user", usr="asdf"))
-    else:
+    if request.method != "POST":
         return render_template("login.html", stylesheet=True)
+
+    user = request.form["username"]
+    passwd = request.form["password"]
+
+    # TODO: series of checks
+    return redirect(url_for("user", usr=user))
 
 @app.route("/join")
 def join():
