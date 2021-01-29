@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, redirect
+from flask import Flask, render_template, url_for, redirect, request
 
 app = Flask(__name__)
 
@@ -6,9 +6,14 @@ app = Flask(__name__)
 def index():
     return render_template("index.html", stylesheet=False)
 
-@app.route("/login")
+@app.route("/login", methods=["GET", "POST"])
 def login():
-    return render_template("login.html", stylesheet=True)
+    if request.method == "POST":
+        #user = request.form["username"]
+        print(request.data)
+        return redirect(url_for("user", usr="asdf"))
+    else:
+        return render_template("login.html", stylesheet=True)
 
 @app.route("/join")
 def join():
@@ -16,7 +21,7 @@ def join():
 
 @app.route("/<usr>")
 def user(usr, stylesheet=True):
-    return ""
+    return render_template("user.html")
 
 @app.route("/<usr>/insert")
 def insert():
