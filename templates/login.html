@@ -1,25 +1,22 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-    <link rel="stylesheet" href="{{url_for('static', filename='styles/login.css')}}">
-  </head>
-  <body style="background-color: grey;">
-      
-    <div class="login-box">
-      <h1>Login</h1>
-      <div class="textbox">
-        <i class="fas fa-user"></i>
-        <input type="text" name="username" placeholder="Username">
-      </div>
+{% extends "base.html" %}
 
-      <div class="textbox">
-        <i class="fas fa-lock"></i>
-        <input type="password" name="password" placeholder="Password">
-      </div>
+{% block title %}Login to CRUDApp{% endblock %}
 
-      <input type="button" class="btn" value="Log in">
-    </div>
-  </body>
-</html>
+{% block stylesheet %} {{url_for('static', filename='styles/login.css')}} {% endblock %}
+
+{% block body %}
+  <div class="login-box">
+  <h1>Login</h1>
+  <div class="textbox">
+    <i class="fas fa-user"></i>
+    <input type="text" name="username" placeholder="Username or Email">
+  </div>
+
+  <div class="textbox">
+    <i class="fas fa-lock"></i>
+    <input type="password" name="password" placeholder="Password">
+  </div>
+
+  <input type="button" class="btn" value="Log in">
+  </div>
+{% endblock %}
