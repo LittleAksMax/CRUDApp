@@ -16,3 +16,16 @@ def close(db, cursor):
     cursor.close()
     db.close()
 
+# TODO: create a check_username_already_used() function that checks whether a user is in the Users table
+
+# --- Users --- #
+
+def check_username_already_used(usrname):
+    db, cursor = setup()
+
+    cursor.execute(f"SELECT EXISTS(SELECT * FROM Users WHERE username='{usrname}')")
+    print(cursor)
+
+    close(db, cursor)
+
+# --- Data --- #
