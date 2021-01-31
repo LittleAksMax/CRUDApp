@@ -29,9 +29,18 @@ def check_username_already_used(usrname: str) -> bool:
     close(db, cursor)
     return True if value == 1 else False
 
-def insert_user(usrname: str, passwd: str) -> bool:
-    if check_username_already_used(usrname):
-        return False # unsuccessful insertion, username already present in Users
+def check_email_already_used(email: str) -> bool:
+    db, cursor = setup()
+
+    cursor.execute(f"SELECT EXISTS(SELECT * FROM Users WHERE email='{email}');")
+    
+    for x in cursor:
+        value = x[0] # returns tuple, need first (and only) element, which is result
+
+    close(db, cursor)
+    return True if value == 1 else False
+
+def insert_user(usrname: str, passwd: str, email: str) -> None:
 
     db, cursor = setup()
 
@@ -40,8 +49,8 @@ def insert_user(usrname: str, passwd: str) -> bool:
     pepper = crypt.get_salt_pepper()
     passwd = crypt.encrypt(salt, pepper, passwd)
 
-    cursor.execute(f"INSERT INTO Users (username, salt, pepper, password) VALUES \
-        ('{usrname}','{salt}', '{pepper}', '{passwd}');")    
+    cursor.execute(f"INSERT INTO Users (username, salt, pepper, password, email) VALUES \
+        ('{usrname}','{salt}', '{pepper}', '{passwd}', '{email}');")    
     db.commit()
 
     close(db, cursor)
@@ -49,8 +58,6 @@ def insert_user(usrname: str, passwd: str) -> bool:
     return True # successful insertion
 
 def delete_user(usr_id: str) -> None:
-    # don't need to verify the user already being in Users, as this option can
-    # only come up if they are logged in
 
     db, cursor = setup()
 
