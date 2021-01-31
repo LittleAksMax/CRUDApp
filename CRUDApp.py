@@ -7,10 +7,10 @@ app.permanent_session_lifetime = timedelta(hours=5)
 
 @app.route("/")
 def index():
-    if "user" not in session:
-        return render_template("index.html", session=session)
-    else:
-        return redirect(url_for("user", usr=session["user"]))
+    #if "user" not in session:
+    return render_template("index.html")
+    #else:
+    #    return redirect(url_for("user", usr=session["user"]))
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -21,12 +21,14 @@ def login():
     passwd = request.form["password"]
     session["user"] = user # create session
 
-    # TODO: series of checks on entered credentials
+    # TODO: series of checks on entered credentials, make a branch that works on credentials
     return redirect(url_for("user", usr=user))
 
-@app.route("/join")
+@app.route("/join", methods=["GET", "POST"])
 def join():
-    return render_template("signup.html")
+    if request.method != "POST":
+        return render_template("signup.html")
+    # TODO: set this up, creating a user, and then joining that session, and redirecting to /<usr>
 
 @app.route("/logout")
 def logout():
@@ -38,7 +40,7 @@ def user(usr):
     if "user" not in session:
         return redirect(url_for("index"))
     else:
-        return render_template("user.html")
+        return render_template("user.html", usrname=session["user"])
 
 @app.route("/<usr>/insert")
 def insert():
