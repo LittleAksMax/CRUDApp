@@ -1,5 +1,6 @@
-from flask import Flask, render_template, url_for, redirect, request, session
+from flask import Flask, render_template, url_for, redirect, request, session, flash
 from datetime import timedelta
+import database_handler
 
 app = Flask(__name__)
 app.secret_key = "LittleAksMax"
@@ -17,18 +18,41 @@ def login():
     if request.method != "POST":
         return render_template("login.html")
 
-    user = request.form["username"]
-    passwd = request.form["password"]
-    session["user"] = user # create session
+    invalid = True # could just be a while true, used invalid for readability
+    while invalid:
+        user = request.form["username"]
+        passwd = request.form["password"]
 
-    # TODO: series of checks on entered credentials, make a branch that works on credentials
-    return redirect(url_for("user", usr=user))
+        if not database_handler.check_username_already_used(user):
+            flash("These details haven't been registered, go back and sign up instead!")
+        else:
+            session["user"] = user # create session
+            invalid = False
+            return redirect(url_for("user", usr=user))
 
 @app.route("/join", methods=["GET", "POST"])
 def join():
     if request.method != "POST":
         return render_template("signup.html")
-    # TODO: set this up, creating a user, and then joining that session, and redirecting to /<usr>
+
+    invalid = True # could just be a while true, used invalid for readability
+    while invalid:
+        user = request.form["username"]
+        passwd = request.form["password"]
+        email = request.form["email"]
+
+        if database_handler.check_username_already_used(user):
+            flash("This username has already been used!")
+        if database_handler.check_email_already_used(email):
+            flash("This email has already been used!")
+
+        else:
+            # add to database
+            database_handler.insert_user(user, passwd, email)
+
+            session["user"] = user # create session
+            invalid = False
+            return redirect(url_for("user", usr=user))
 
 @app.route("/logout")
 def logout():
