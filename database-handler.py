@@ -54,9 +54,9 @@ def delete_user(usr_id: str) -> None:
 
     db, cursor = setup()
 
-    cursor.execute(f"DELETE FROM Users WHERE uID='{usr_id}';")
+    cursor.execute(f"DELETE FROM Users WHERE uID={usr_id};")
 
-    cursor.execute(f"DELETE FROM Employees WHERE uID='{usr_id}';")
+    cursor.execute(f"DELETE FROM Employees WHERE uID={usr_id};")
 
     db.commit()
 
@@ -64,10 +64,10 @@ def delete_user(usr_id: str) -> None:
     
 # --- Data --- #
 
-def check_employee_already_present(fname: str, sname: str) -> bool:
+def check_employee_already_present(fname: str, sname: str, uID: int) -> bool:
     db, cursor = setup()
 
-    cursor.execute(f"SELECT EXISTS(SELECT * FROM Employees WHERE fname='{fname}' AND sname='{sname}');")
+    cursor.execute(f"SELECT EXISTS(SELECT * FROM Employees WHERE fname='{fname}' AND sname='{sname}' AND uID={uID});")
     
     for x in cursor:
         value = x[0] # returns tuple, need first (and only) element, which is result
@@ -75,14 +75,14 @@ def check_employee_already_present(fname: str, sname: str) -> bool:
     close(db, cursor)
     return True if value == 1 else False
 
-def insert_employee(fname: str, sname: str, email: str) -> bool:
+def insert_employee(fname: str, sname: str, email: str, uID: int) -> bool:
     # check if already there present
-    if check_username_already_used(fname, sname):
+    if check_username_already_used(fname, sname, uID):
         return False
 
     db, cursor = setup()
 
-    cursor.execute(f"INSERT INTO Employees (fname, sname, email) VALUES ('{fname}', '{sname}', '{email}');")
+    cursor.execute(f"INSERT INTO Employees (fname, sname, email, uID) VALUES ('{fname}', '{sname}', '{email}', {uID});")
     db.commit()
 
     close(db, cursor)
@@ -93,7 +93,7 @@ def update_employee(emp_id: int, fname: str, sname: str, email: str) -> None:
 
     db, cursor = setup()
 
-    cursor.execute(f"UPDATE Employees SET fname='{fname}', sname='{sname}', email='{email}') WHERE eID='{emp_id}';")
+    cursor.execute(f"UPDATE Employees SET fname='{fname}', sname='{sname}', email='{email}') WHERE eID={emp_id};")
     db.commit()  
 
     close(db, cursor)
@@ -103,7 +103,7 @@ def delete_employee(emp_id: int) -> None:
 
     db, cursor = setup()
 
-    cursor.execute(f"DELETE FROM Employees WHERE eID='{usr_id}';")
+    cursor.execute(f"DELETE FROM Employees WHERE eID={emp_id};")
     db.commit()
     
     close(db, cursor)
