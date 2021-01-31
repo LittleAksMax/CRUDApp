@@ -18,7 +18,7 @@ def close(db, cursor):
 
 # --- Users --- #
 
-def check_username_already_used(usrname):
+def check_username_already_used(usrname: str) -> bool:
     db, cursor = setup()
 
     cursor.execute(f"SELECT EXISTS(SELECT * FROM Users WHERE username='{usrname}');")
@@ -54,9 +54,9 @@ def delete_user(usr_id: str) -> None:
 
     db, cursor = setup()
 
-    cursor.execute(f"DELETE FROM Users WHERE uID='{usr_id}'")
+    cursor.execute(f"DELETE FROM Users WHERE uID='{usr_id}';")
 
-    cursor.execute(f"DELETE FROM Data WHERE uID='{usr_id}'")
+    cursor.execute(f"DELETE FROM Employees WHERE uID='{usr_id}';")
 
     db.commit()
 
@@ -64,11 +64,46 @@ def delete_user(usr_id: str) -> None:
     
 # --- Data --- #
 
-def insert_employee(fname: str, sname: str, email: str, birthdate: str) -> bool:
-    pass
+def check_employee_already_present(fname: str, sname: str) -> bool:
+    db, cursor = setup()
 
-def update_employee(fname: str, sname: str, email: str, birthdate: str) -> bool:
-    pass
+    cursor.execute(f"SELECT EXISTS(SELECT * FROM Employees WHERE fname='{fname}' AND sname='{sname}');")
+    
+    for x in cursor:
+        value = x[0] # returns tuple, need first (and only) element, which is result
 
-def delete_employee(fname: str, sname: str, email: str, birthdate: str) -> bool:
-    pass
+    close(db, cursor)
+    return True if value == 1 else False
+
+def insert_employee(fname: str, sname: str, email: str) -> bool:
+    # check if already there present
+    if check_username_already_used(fname, sname):
+        return False
+
+    db, cursor = setup()
+
+    cursor.execute(f"INSERT INTO Employees (fname, sname, email) VALUES ('{fname}', '{sname}', '{email}');")
+    db.commit()
+
+    close(db, cursor)
+    return True
+
+def update_employee(emp_id: int, fname: str, sname: str, email: str) -> None:
+    # don't need to check if present in table, because it can only show up if the employee is shown
+
+    db, cursor = setup()
+
+    cursor.execute(f"UPDATE Employees SET fname='{fname}', sname='{sname}', email='{email}') WHERE eID='{emp_id}';")
+    db.commit()  
+
+    close(db, cursor)
+
+def delete_employee(emp_id: int) -> None:
+    # don't need to check if present in table, because it can only show up if the employee is shown
+
+    db, cursor = setup()
+
+    cursor.execute(f"DELETE FROM Employees WHERE eID='{usr_id}';")
+    db.commit()
+    
+    close(db, cursor)
