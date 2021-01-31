@@ -1,6 +1,10 @@
-from flask import Flask, render_template, url_for, redirect, request
+from flask import Flask, render_template, url_for, redirect, request, session
+from datetime import timedelta
 
 app = Flask(__name__)
+app.secret_key = "LittleAksMax"
+session.permanent = True
+app.permanent_session_lifetime = timedelta(hours=5)
 
 @app.route("/")
 def index():
