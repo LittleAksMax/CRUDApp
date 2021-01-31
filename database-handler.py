@@ -63,3 +63,12 @@ def delete_user(usr_id: str) -> None:
     close(db, cursor)
     
 # --- Data --- #
+
+def insert_employee(fname: str, sname: str, email: str, birthdate: str) -> bool:
+    pass
+
+def update_employee(fname: str, sname: str, email: str, birthdate: str) -> bool:
+    pass
+
+def delete_employee(fname: str, sname: str, email: str, birthdate: str) -> bool:
+    pass
