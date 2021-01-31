@@ -2,7 +2,9 @@
 
 {% block title %}Login to CRUDApp{% endblock %}
 
-{% block stylesheet %} {{url_for('static', filename='styles/login.css')}} {% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{url_for('static', filename='styles/login.css')}}">
+{% endblock %}
 
 {% block body %}
   <div class="login-box">
