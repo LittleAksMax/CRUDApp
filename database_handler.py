@@ -43,14 +43,19 @@ def check_email_already_used(email: str) -> bool:
 def check_password(usrname: str, passwd: str) -> bool:
     db, cursor = setup()
 
-    cursor.execute(f"SELECT * FROM Users WHERE username='{usrname}'")
+    cursor.execute(f"SELECT salt FROM Users WHERE username='{usrname}'")
     for x in cursor:
-        user_details = x
-    passwd = crypt.encrypt(user_details[1], user_details[2], passwd)
+        salt = x[0]
+    cursor.execute(f"SELECT pepper FROM Users WHERE username='{usrname}'")
+    for x in cursor:
+        pepper = x[0]
+    cursor.execute(f"SELECT password FROM Users WHERE username='{usrname}'")
+    for x in cursor:
+        db_passwd = x[0]
+    db_passwd = crypt.decrypt(salt, pepper, bytes(db_passwd, "utf-8"))
 
     close(db, cursor)
-
-    return True if user_details[3] == passwd else False
+    return True if passwd == db_passwd else False
 
 def insert_user(usrname: str, passwd: str, email: str) -> None:
 

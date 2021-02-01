@@ -1,8 +1,5 @@
-<head>
-  <!--<link rel="stylesheet" href="{{ url_for('static', filename='styles/flash.css') }}">-->
-</head>
 <body>
-	<div class="container" style="min-height:100% width:80%">
+	<div class="container" style="min-height:100%; width:80%">
     {% with messages = get_flashed_messages() %}
       {% if messages %}
         {% for message in messages %}
@@ -12,8 +9,6 @@
           </div>
         {% endfor %}
       {% endif %}
-    {% endwith %}
-    
-    </div>
-  <!--<script src="{{ url_for('static', filename='javascript/flash.js') }}"></script>-->
+    {% endwith %} 
+  </div>
 </body>
