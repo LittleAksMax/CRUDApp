@@ -18,41 +18,48 @@ def login():
     if request.method != "POST":
         return render_template("login.html")
 
-    invalid = True # could just be a while true, used invalid for readability
-    while invalid:
-        user = request.form["username"]
-        passwd = request.form["password"]
+    invalid = False
+    user = request.form["username"]
+    passwd = request.form["password"]
 
-        if not database_handler.check_username_already_used(user):
-            flash("These details haven't been registered, go back and sign up instead!")
-        else:
-            session["user"] = user # create session
-            invalid = False
-            return redirect(url_for("user", usr=user))
+    if not database_handler.check_username_already_used(user):
+        flash("These details haven't been registered, did you mean to sign up instead?")
+        invalid = True
+    if database_handler.check_password(user, passwd):
+        flash("Incorrect password")
+        invalid = True
+
+    if not invalid:
+        session["user"] = user # create session
+        return redirect(url_for("user", usr=user))
+    else:
+        return redirect(url_for("login"))
 
 @app.route("/join", methods=["GET", "POST"])
 def join():
     if request.method != "POST":
         return render_template("signup.html")
 
-    invalid = True # could just be a while true, used invalid for readability
-    while invalid:
-        user = request.form["username"]
-        passwd = request.form["password"]
-        email = request.form["email"]
+    user = request.form["username"]
+    passwd = request.form["password"]
+    email = request.form["email"]
 
-        if database_handler.check_username_already_used(user):
-            flash("This username has already been used!")
-        if database_handler.check_email_already_used(email):
-            flash("This email has already been used!")
+    invalid = False
+    if database_handler.check_username_already_used(user):
+        flash("This username has already been used!")
+        invalid = True
+    if database_handler.check_email_already_used(email):
+        flash("This email has already been used!")
+        invalid = True
 
-        else:
-            # add to database
-            database_handler.insert_user(user, passwd, email)
+    if not invalid:
+        # add to database
+        database_handler.insert_user(user, passwd, email)
 
-            session["user"] = user # create session
-            invalid = False
-            return redirect(url_for("user", usr=user))
+        session["user"] = user # create session
+        return redirect(url_for("user", usr=user))
+    else:
+        return redirect(url_for("join"))
 
 @app.route("/logout")
 def logout():

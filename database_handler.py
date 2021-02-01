@@ -40,6 +40,18 @@ def check_email_already_used(email: str) -> bool:
     close(db, cursor)
     return True if value == 1 else False
 
+def check_password(usrname: str, passwd: str) -> bool:
+    db, cursor = setup()
+
+    cursor.execute(f"SELECT * FROM Users WHERE username='{usrname}'")
+    for x in cursor:
+        user_details = x
+    passwd = crypt.encrypt(user_details[1], user_details[2], passwd)
+
+    close(db, cursor)
+
+    return True if user_details[3] == passwd else False
+
 def insert_user(usrname: str, passwd: str, email: str) -> None:
 
     db, cursor = setup()
