@@ -40,6 +40,18 @@ def check_email_already_used(email: str) -> bool:
     close(db, cursor)
     return True if value == 1 else False
 
+def check_password(usrname: str, passwd: str) -> bool:
+    db, cursor = setup()
+
+    cursor.execute(f"SELECT * FROM Users WHERE username='{usrname}'")
+    for x in cursor:
+        user_details = x
+    passwd = crypt.encrypt(user_details[1], user_details[2], passwd)
+
+    close(db, cursor)
+
+    return True if user_details[3] == passwd else False
+
 def insert_user(usrname: str, passwd: str, email: str) -> None:
 
     db, cursor = setup()
@@ -84,7 +96,7 @@ def check_employee_already_present(fname: str, sname: str, uID: int) -> bool:
 
 def insert_employee(fname: str, sname: str, email: str, uID: int) -> bool:
     # check if already there present
-    if check_username_already_used(fname, sname, uID):
+    if check_employee_already_present(fname, sname, uID):
         return False
 
     db, cursor = setup()
