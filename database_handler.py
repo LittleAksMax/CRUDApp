@@ -96,7 +96,7 @@ def check_employee_already_present(fname: str, sname: str, uID: int) -> bool:
 
 def insert_employee(fname: str, sname: str, email: str, uID: int) -> bool:
     # check if already there present
-    if check_username_already_used(fname, sname, uID):
+    if check_employee_already_present(fname, sname, uID):
         return False
 
     db, cursor = setup()

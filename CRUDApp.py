@@ -23,10 +23,10 @@ def login():
     passwd = request.form["password"]
 
     if not database_handler.check_username_already_used(user):
-        flash("These details haven't been registered, did you mean to sign up instead?")
+        flash("These details haven't been registered, did you mean to sign up instead?", "error")
         invalid = True
     if database_handler.check_password(user, passwd):
-        flash("Incorrect password")
+        flash("Incorrect password", "error")
         invalid = True
 
     if not invalid:
@@ -46,10 +46,10 @@ def join():
 
     invalid = False
     if database_handler.check_username_already_used(user):
-        flash("This username has already been used!")
+        flash("This username has already been used!", "error")
         invalid = True
     if database_handler.check_email_already_used(email):
-        flash("This email has already been used!")
+        flash("This email has already been used!", "error")
         invalid = True
 
     if not invalid:
