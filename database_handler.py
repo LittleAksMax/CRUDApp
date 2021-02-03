@@ -145,7 +145,7 @@ def get_employees(uID: int) -> list:
 
     employees = []
 
-    cursor.execute(f"SELECT * FROM Employees WHERE uID={uID};") # e(iD, fname, sname, email, uID)
+    cursor.execute(f"SELECT * FROM Employees WHERE uID={uID};") # (eID, fname, sname, email, uID)
     for x in cursor:
         employees.append(x)
 

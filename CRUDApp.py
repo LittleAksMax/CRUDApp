@@ -33,6 +33,7 @@ def login():
     if not invalid:
         session["user"] = user # create session
         session["id"] = database_handler.get_user_id(user)
+        session["emps"] = database_handler.get_employees(session["id"])
         return redirect(url_for("user", usr=user))
     else:
         return redirect(url_for("login"))
@@ -62,7 +63,8 @@ def join():
         database_handler.insert_user(user, passwd, email)
 
         session["user"] = user # create session
-        return redirect(url_for("user", usr=user))
+        session["id"] = database_handler.get_user_id(user)
+        return redirect(url_for("user", usr=user, employees=database_handler.get_employees(session["id"])))
     else:
         return redirect(url_for("join"))
 
@@ -76,7 +78,7 @@ def user(usr):
     if "user" not in session:
         return redirect(url_for("index"))
     else:
-        return render_template("user.html", usrname=session["user"])
+        return render_template("user.html", usrname=usr, employees=session["emps"])
 
 @app.route("/<usr>/insert")
 def insert():
