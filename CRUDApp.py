@@ -32,6 +32,7 @@ def login():
 
     if not invalid:
         session["user"] = user # create session
+        session["id"] = database_handler.get_user_id(user)
         return redirect(url_for("user", usr=user))
     else:
         return redirect(url_for("login"))
