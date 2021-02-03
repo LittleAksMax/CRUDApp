@@ -75,17 +75,25 @@ def insert_user(usrname: str, passwd: str, email: str) -> None:
     return True # successful insertion
 
 def delete_user(usr_id: str) -> None:
-
     db, cursor = setup()
 
     cursor.execute(f"DELETE FROM Users WHERE uID={usr_id};")
-
     cursor.execute(f"DELETE FROM Employees WHERE uID={usr_id};")
-
     db.commit()
 
     close(db, cursor)
-    
+
+def get_user_id(usrname: str) -> int:
+    db, cursor = setup()
+
+    cursor.execute(f"SELECT uID FROM Users WHERE username='{usrname}'")
+    for x in cursor:
+        uID = x
+
+    close(db, cursor)
+
+    return uID
+
 # --- Data --- #
 
 def check_employee_already_present(fname: str, sname: str, uID: int) -> bool:
@@ -131,3 +139,5 @@ def delete_employee(emp_id: int) -> None:
     db.commit()
     
     close(db, cursor)
+
+print(get_user_id("LittleAksMax"))
