@@ -43,13 +43,13 @@ def check_email_already_used(email: str) -> bool:
 def check_password(usrname: str, passwd: str) -> bool:
     db, cursor = setup()
 
-    cursor.execute(f"SELECT salt FROM Users WHERE username='{usrname}'")
+    cursor.execute(f"SELECT salt FROM Users WHERE username='{usrname}';")
     for x in cursor:
         salt = x[0]
-    cursor.execute(f"SELECT pepper FROM Users WHERE username='{usrname}'")
+    cursor.execute(f"SELECT pepper FROM Users WHERE username='{usrname}';")
     for x in cursor:
         pepper = x[0]
-    cursor.execute(f"SELECT password FROM Users WHERE username='{usrname}'")
+    cursor.execute(f"SELECT password FROM Users WHERE username='{usrname}';")
     for x in cursor:
         db_passwd = x[0]
     db_passwd = crypt.decrypt(salt, pepper, bytes(db_passwd, "utf-8"))
@@ -86,9 +86,9 @@ def delete_user(usr_id: str) -> None:
 def get_user_id(usrname: str) -> int:
     db, cursor = setup()
 
-    cursor.execute(f"SELECT uID FROM Users WHERE username='{usrname}'")
+    cursor.execute(f"SELECT uID FROM Users WHERE username='{usrname}';")
     for x in cursor:
-        uID = x
+        uID = x[0]
 
     close(db, cursor)
 
@@ -140,4 +140,15 @@ def delete_employee(emp_id: int) -> None:
     
     close(db, cursor)
 
-print(get_user_id("LittleAksMax"))
+def get_employees(uID: int) -> list:
+    db, cursor = setup()
+
+    employees = []
+
+    cursor.execute(f"SELECT * FROM Employees WHERE uID={uID};") # e(iD, fname, sname, email, uID)
+    for x in cursor:
+        employees.append(x)
+
+    close(db, cursor)
+
+    return employees
