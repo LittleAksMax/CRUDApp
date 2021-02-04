@@ -1,23 +1,20 @@
 {% extends "base.html" %}
-{% include "header.html" %}
 
 {% block title %}{{usrname}}{% endblock %}
 
-{% block content %}
-<!-- TODO: fix everything, add matrix tuple as parameter called employees -->
+{% block body %}
 <table class="table table-striped">
     <tr>
         <th>Forename</th>
         <th>Surname</th>
         <th>Email</th>
     </tr>
-<!--
-    {% for row in employees %}
+    {% for employee in employees %}
         <tr>
-            <td>{{employees[1]}}</td>
-            <td>{{employees[2]}}</td>
-            <td>{{employees[3]}}</td>
-    {% endfor  %}
--->
+            <td>{{employee[1]}}</td>
+            <td>{{employee[2]}}</td>
+            <td>{{employee[3]}}</td>
+        </tr>
+    {% endfor %}
 </table>
 {% endblock %}

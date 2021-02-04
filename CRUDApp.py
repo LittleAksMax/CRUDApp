@@ -78,6 +78,7 @@ def user(usr):
     if "user" not in session:
         return redirect(url_for("index"))
     else:
+        print(session["emps"])
         return render_template("user.html", usrname=usr, employees=session["emps"])
 
 @app.route("/<usr>/insert")
