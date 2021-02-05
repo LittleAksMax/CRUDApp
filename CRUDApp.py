@@ -70,6 +70,7 @@ def join():
 
 @app.route("/logout")
 def logout():
+    flash("Login successful")
     session.pop("user", None) # remove data
     return redirect(url_for("index"))
 
@@ -78,7 +79,7 @@ def user(usr):
     if "user" not in session:
         return redirect(url_for("index"))
     else:
-        print(session["emps"])
+        flash("Login successful")
         return render_template("user.html", usrname=usr, employees=session["emps"])
 
 @app.route("/<usr>/insert")
