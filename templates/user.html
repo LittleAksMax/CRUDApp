@@ -4,6 +4,7 @@
 {% block title %}{{usrname}}{% endblock %}
 
 {% block body %}
+<a href="{{url_for('insert', usr=usrname)}}" class="btn btn-success btn-xs">Insert</a>
 <table class="table table-striped">
     <tr>
         <th style="color: white;">Forename</th>
@@ -16,10 +17,10 @@
                 <td style="color: white;">{{employee[i]}}</td>
             {% endfor %}
             <td>
-                <a href="#" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{employee[1]}}">Edit</a>
-                <a href="#" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure For Delete?')">Delete</a>
+                <a href="{{url_for('update', usr=usrname)}}" class="btn btn-warning btn-xs" data-target="#modaledit{{employee[0]}}">Edit</a>
+                <a href="{{url_for('delete', usr=usrname)}}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure For Delete?')">Delete</a>
             </td>
         </tr>
-    {% endfor %}
+    {% endfor %}     
 </table>
 {% endblock %}
