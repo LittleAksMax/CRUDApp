@@ -79,7 +79,7 @@ def user(usr):
     if "user" not in session:
         return redirect(url_for("index"))
     else:
-        flash("Login successful")
+        flash("Authentication successful")
         return render_template("user.html", usrname=usr, employees=session["emps"])
 
 @app.route("/<usr>/insert")
