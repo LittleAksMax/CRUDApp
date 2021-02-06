@@ -152,3 +152,7 @@ def get_employees(uID: int) -> list:
     close(db, cursor)
 
     return employees
+
+def filter(substr: str) -> list:
+    #SELECT * FROM Employees WHERE fname LIKE "%Dav%";
+    pass
