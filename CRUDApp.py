@@ -79,20 +79,19 @@ def user(usr):
     if "user" not in session:
         return redirect(url_for("index"))
     else:
-        flash("Authentication successful")
         return render_template("user.html", usrname=usr, employees=session["emps"])
 
-@app.route("/<usr>/insert")
+@app.route("/<usr>/insert", methods=["POST"])
 def insert(usr):
-    return render_template("insert.html")
+    return redirect(url_for("user", usr=usr))
 
-@app.route("/<usr>/update")
+@app.route("/<usr>/update", methods=["GET", "POST"])
 def update(usr):
-    return render_template("update.html")
+    return redirect(url_for("user", usr=usr))
 
-@app.route("/<usr>/delete")
+@app.route("/<usr>/delete", methods=["GET", "POST"])
 def delete(usr):
-    return render_template("delete.html")
+    return redirect(url_for("user", usr=usr))
 
 if __name__ == "__main__":
     app.run(debug=True)
