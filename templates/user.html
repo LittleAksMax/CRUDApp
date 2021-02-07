@@ -23,7 +23,7 @@
             {% endfor %}
             <td>
                 <a href="{{url_for('update', usr=usrname)}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{employee[0]}}">Edit</a>
-                <a href="{{url_for('delete', usr=usrname)}}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure For Delete?')">Delete</a>
+                <a href="{{url_for('delete', usr=usrname, eID=employee[0])}}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure For Delete?')">Delete</a>
             </td>
         </tr>
                             <!-- Modal Edit Employee-->
@@ -46,7 +46,7 @@
             
                             <div class="form-group">
                                 <label>Surname:</label>
-                                <input type="text" class="form-control" name="forename" value="{{employee[2]}}">
+                                <input type="text" class="form-control" name="surname" value="{{employee[2]}}">
                             </div>
             
                             <div class="form-group">
@@ -86,7 +86,7 @@
             <div class="form-group">
 
                 <label>Forename:</label>
-                <input type="text" class="form-control" name="Forename" required="1">
+                <input type="text" class="form-control" name="forename" required="1">
 
 
             </div>
@@ -96,7 +96,7 @@
 
 
                 <label>Surname:</label>
-                <input type="text" class="form-control" name="Surname" required="1">
+                <input type="text" class="form-control" name="surname" required="1">
 
 
             </div>
@@ -106,7 +106,7 @@
 
 
                 <label>Email:</label>
-                <input type="email" class="form-control" name="e.mail@example.com">
+                <input type="email" class="form-control" name="email">
 
 
             </div>

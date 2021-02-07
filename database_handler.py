@@ -96,10 +96,10 @@ def get_user_id(usrname: str) -> int:
 
 # --- Data --- #
 
-def check_employee_already_present(fname: str, sname: str, uID: int) -> bool:
+def check_employee_already_present(fname: str, sname: str, email: str, uID: int) -> bool:
     db, cursor = setup()
 
-    cursor.execute(f"SELECT EXISTS(SELECT * FROM Employees WHERE fname='{fname}' AND sname='{sname}' AND uID={uID});")
+    cursor.execute(f"SELECT EXISTS(SELECT * FROM Employees WHERE fname='{fname}' AND sname='{sname}' AND email='{email}' AND uID={uID});")
     
     for x in cursor:
         value = x[0] # returns tuple, need first (and only) element, which is result
@@ -109,7 +109,7 @@ def check_employee_already_present(fname: str, sname: str, uID: int) -> bool:
 
 def insert_employee(fname: str, sname: str, email: str, uID: int) -> bool:
     # check if already there present
-    if check_employee_already_present(fname, sname, uID):
+    if check_employee_already_present(fname, sname, email, uID):
         return False
 
     db, cursor = setup()
@@ -120,12 +120,12 @@ def insert_employee(fname: str, sname: str, email: str, uID: int) -> bool:
     close(db, cursor)
     return True
 
-def update_employee(emp_id: int, fname: str, sname: str, email: str) -> None:
+def update_employee(eID: int, fname: str, sname: str, email: str) -> None:
     # don't need to check if present in table, because it can only show up if the employee is shown
 
     db, cursor = setup()
 
-    cursor.execute(f"UPDATE Employees SET fname='{fname}', sname='{sname}', email='{email}') WHERE eID={emp_id};")
+    cursor.execute(f"UPDATE Employees SET fname='{fname}', sname='{sname}', email='{email}' WHERE eID={eID};")
     db.commit()  
 
     close(db, cursor)
