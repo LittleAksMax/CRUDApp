@@ -4,9 +4,9 @@ import mysql.connector
 def setup():
     db = mysql.connector.connect(
         host="ip",
-        user="usrname",
-        passwd="passwd",
-        database="db"
+        user="username",
+        passwd="password",
+        database="database"
     )
     cursor = db.cursor()
 
