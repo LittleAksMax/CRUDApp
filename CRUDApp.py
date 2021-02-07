@@ -33,7 +33,6 @@ def login():
     if not invalid:
         session["user"] = user # create session
         session["id"] = database_handler.get_user_id(user)
-        session["emps"] = database_handler.get_employees(session["id"])
         return redirect(url_for("user", usr=user))
     else:
         return redirect(url_for("login"))
@@ -79,18 +78,37 @@ def user(usr):
     if "user" not in session:
         return redirect(url_for("index"))
     else:
+        session["emps"] = database_handler.get_employees(session["id"])
         return render_template("user.html", usrname=usr, employees=session["emps"])
 
 @app.route("/<usr>/insert", methods=["POST"])
 def insert(usr):
-    return redirect(url_for("user", usr=usr))
+    if request.method == "POST":
+        fname = request.form["forename"]
+        sname = request.form["surname"]
+        email = request.form["email"]
+        if database_handler.insert_employee(fname, sname, email, session["id"]):
+            flash("Employee added successfully", "info")
+        else:
+            flash("Employee was already present", "info")
+        return redirect(url_for("user", usr=usr))
 
 @app.route("/<usr>/update", methods=["GET", "POST"])
 def update(usr):
-    return redirect(url_for("user", usr=usr))
+    if request.method == "POST":
+        eID = request.form["id"] # hidden input
+        fname = request.form["forename"]
+        sname = request.form["surname"]
+        email = request.form["email"]
+        database_handler.update_employee(eID, fname, sname, email)     
+        flash("Employee updated successfully", "info")
+        return redirect(url_for("user", usr=usr))
 
-@app.route("/<usr>/delete", methods=["GET", "POST"])
-def delete(usr):
+@app.route("/<usr>/delete/<eID>", methods=["GET", "POST"])
+def delete(usr, eID):
+    database_handler.delete_employee(eID)
+    flash("Employee deleted successfully", "info")
+
     return redirect(url_for("user", usr=usr))
 
 if __name__ == "__main__":
