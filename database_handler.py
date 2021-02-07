@@ -3,10 +3,10 @@ import mysql.connector
 
 def setup():
     db = mysql.connector.connect(
-        host="192.168.0.95",
-        user="littleaksmax",
-        passwd="KurvaNagyVeres05",
-        database="CRUDApp"
+        host="ip",
+        user="usrname",
+        passwd="passwd",
+        database="db"
     )
     cursor = db.cursor()
 
@@ -152,7 +152,3 @@ def get_employees(uID: int) -> list:
     close(db, cursor)
 
     return employees
-
-def filter(substr: str) -> list:
-    #SELECT * FROM Employees WHERE fname LIKE "%Dav%";
-    pass
