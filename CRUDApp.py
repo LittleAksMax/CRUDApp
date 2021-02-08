@@ -111,5 +111,5 @@ def delete(usr, eID):
 
     return redirect(url_for("user", usr=usr))
 
-if __name__ == "__main__":
-    app.run(debug=True)
+#if __name__ == "__main__":
+#    app.run(debug=True)
